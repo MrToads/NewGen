@@ -1,0 +1,9 @@
+NewGen/
+├── index.html
+├── profile.html
+├── styles/
+│   └── style.css
+├── scripts/
+│   └── app.js
+└── images/
+    └── default-avatar.png
