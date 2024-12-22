@@ -1,34 +1,65 @@
-// Function to submit a new post
+// Handle new post creation
 function submitPost() {
-    const postContent = document.getElementById('tweet-input').value;
-    if (postContent) {
-        const postFeed = document.getElementById('feed');
-        const newPost = document.createElement('div');
-        newPost.classList.add('post');
-        newPost.innerHTML = `
-            <p>${postContent}</p>
-            <button onclick="likePost(this)">Like</button>
-            <button onclick="commentPost(this)">Comment</button>
-            <button>Share</button>
-        `;
-        postFeed.prepend(newPost); // Add post at the top of the feed
-        document.getElementById('tweet-input').value = ''; // Clear the textarea
+    var postText = document.getElementById("post-text").value;
+
+    if (postText.trim() !== "") {
+        var postFeed = document.getElementById("post-feed");
+
+        var newPost = document.createElement("div");
+        newPost.classList.add("post");
+
+        var postHeader = document.createElement("div");
+        postHeader.classList.add("post-header");
+
+        var profileImg = document.createElement("img");
+        profileImg.src = "https://via.placeholder.com/50";
+        profileImg.alt = "User";
+        profileImg.classList.add("profile-img");
+
+        var username = document.createElement("span");
+        username.classList.add("username");
+        username.textContent = "John Doe";
+
+        var postContent = document.createElement("p");
+        postContent.textContent = postText;
+
+        var likeButton = document.createElement("button");
+        likeButton.textContent = "Like";
+        likeButton.onclick = function () { likePost(likeButton); };
+
+        var commentButton = document.createElement("button");
+        commentButton.textContent = "Comment";
+        commentButton.onclick = function () { commentOnPost(); };
+
+        var shareButton = document.createElement("button");
+        shareButton.textContent = "Share";
+
+        postHeader.appendChild(profileImg);
+        postHeader.appendChild(username);
+        newPost.appendChild(postHeader);
+        newPost.appendChild(postContent);
+        newPost.appendChild(likeButton);
+        newPost.appendChild(commentButton);
+        newPost.appendChild(shareButton);
+
+        postFeed.appendChild(newPost);
+
+        document.getElementById("post-text").value = ""; // Clear textarea
     }
 }
 
-// Function to like a post
+// Like post functionality
 function likePost(button) {
-    button.innerHTML = "Liked";
-    button.disabled = true;
-}
-
-// Function to comment on a post
-function commentPost(button) {
-    const comment = prompt("Enter your comment:");
-    if (comment) {
-        const commentDiv = document.createElement('div');
-        commentDiv.innerHTML = `<strong>Comment:</strong> ${comment}`;
-        button.parentElement.appendChild(commentDiv);
+    if (button.style.backgroundColor === 'rgb(29, 161, 242)') {
+        button.style.backgroundColor = '#3A3B3C';
+        button.style.color = '#E4E6EB';
+    } else {
+        button.style.backgroundColor = '#1DA1F2'; // Facebook-like blue
+        button.style.color = 'white';
     }
 }
 
+// Comment on post functionality
+function commentOnPost() {
+    alert("Comment functionality coming soon!");
+}
