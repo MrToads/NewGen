@@ -3,31 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NewGen - User Profile</title>
-    <link rel="stylesheet" href="styles/style.css">
+    <title>Profile - NewGen</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Header Section -->
     <header>
-        <h1>User Profile</h1>
         <nav>
-            <a href="index.html">Home</a>
-            <a href="#posts">Posts</a>
+            <a href="index.html"><strong>NewGen</strong></a>
+            <a href="profile.html">Profile</a>
+            <a href="feed.html">Feed</a>
         </nav>
     </header>
 
-    <section id="profile-info">
-        <img src="images/default-avatar.png" alt="User Avatar">
-        <h2>User Name</h2>
-        <button>Send Friend Request</button>
-    </section>
+    <!-- Profile Info Section -->
+    <div id="profile-header">
+        <img src="https://via.placeholder.com/120" alt="Profile Picture" class="profile-img">
+        <h2>John Doe</h2>
+        <p>@john_doe</p>
+        <button>Edit Profile</button>
+    </div>
 
-    <section id="posts">
-        <h3>Posts</h3>
+    <!-- User's Posts Section -->
+    <div id="user-posts">
         <div class="post">
-            <p>This is a sample post</p>
+            <div class="post-header">
+                <img src="https://via.placeholder.com/50" alt="User" class="profile-img">
+                <span class="username">John Doe</span>
+            </div>
+            <p>Here's a post from John!</p>
         </div>
-    </section>
+    </div>
 
-    <script src="scripts/app.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
