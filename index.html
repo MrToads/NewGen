@@ -3,92 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Social Media Platform</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            padding: 20px;
-        }
-        .form-container {
-            max-width: 400px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        .post {
-            background-color: #fff;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        }
-        .post-img, .post-video {
-            max-width: 100%;
-            margin-top: 10px;
-        }
-        .post-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 10px;
-        }
-        .post-footer button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .post-footer button:hover {
-            background-color: #0056b3;
-        }
-        .toggle-btn {
-            margin-top: 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px;
-            width: 100%;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .toggle-btn:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <title>My Website</title>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
+    <!-- Header -->
+    <header>
+        <h1>Welcome to My Website</h1>
+        <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
+    </header>
 
-<!-- Login/Signup Forms -->
-<div id="login-form" class="form-container">
-    <h2>Login</h2>
-    <input type="text" id="login-username" placeholder="Username" required>
-    <input type="password" id="login-password" placeholder="Password" required>
-    <button class="toggle-btn" onclick="login()">Login</button>
-    <p>Don't have an account? <a href="javascript:void(0);" onclick="toggleForm()">Sign up</a></p>
-</div>
+    <!-- Post Form -->
+    <div id="post-form">
+        <textarea id="post-text" placeholder="Write your post..."></textarea>
+        <input type="file" id="file-input" accept="image/*,video/*">
+        <button onclick="submitPost()">Submit Post</button>
+    </div>
 
-<div id="signup-form" class="form-container" style="display: none;">
-    <h2>Sign Up</h2>
-    <input type="text" id="signup-username" placeholder="Username" required>
-    <input type="password" id="signup-password" placeholder="Password" required>
-    <button class="toggle-btn" onclick="signup()">Sign Up</button>
-    <p>Already have an account? <a href="javascript:void(0);" onclick="toggleForm()">Login</a></p>
-</div>
+    <!-- Posts Display Section -->
+    <div id="posts-section"></div>
 
-<!-- Feed Page -->
-<div id="feed-page" style="display: none;">
-    <h2>Welcome to the Feed</h2>
-    <textarea id="post-text" placeholder="What's on your mind?" rows="4" style="width: 100%;"></textarea>
-    <input type="file" id="file-input" accept="image/*,video/*">
-    <button class="toggle-btn" onclick="submitPost()">Post</button>
-    <div id="post-feed"></div>
-</div>
+    <!-- Chat Bot Section -->
+    <div id="chat-section">
+        <div id="messages"></div>
+        <input type="text" id="chat-input" placeholder="Ask something...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
 
-<script src="app.js"></script>
+    <script src="js/script.js"></script>
 </body>
 </html>
+
