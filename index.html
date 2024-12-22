@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NewGen - Social Platform</title>
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to NewGen</h1>
+        <nav>
+            <a href="profile.html">Profile</a>
+            <a href="#post-feed">Posts</a>
+        </nav>
+    </header>
+
+    <section id="new-post">
+        <textarea id="tweet-input" placeholder="What's happening?" rows="3" cols="50"></textarea>
+        <button onclick="submitPost()">Post</button>
+    </section>
+
+    <section id="post-feed">
+        <h2>Latest Posts</h2>
+        <div id="feed"></div>
+    </section>
+
+    <script src="scripts/app.js"></script>
+</body>
+</html>
