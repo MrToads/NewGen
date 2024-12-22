@@ -3,52 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile - NewGen</title>
+    <title>Profile</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Header Section -->
-    <header>
-        <nav>
-            <a href="index.html"><strong>NewGen</strong></a>
-            <a href="profile.html">Profile</a>
-            <a href="feed.html">Feed</a>
-        </nav>
-    </header>
 
-    <!-- Profile Info Section -->
-    <div id="profile-header">
-        <img src="https://via.placeholder.com/120" alt="Profile Picture" class="profile-img">
-        <h2>John Doe</h2>
-        <p>@john_doe</p>
-        <button>Edit Profile</button>
-    </div>
-
-    <!-- User's Posts Section -->
-    <div id="user-posts">
-        <div class="post">
-            <div class="post-header">
-                <img src="https://via.placeholder.com/50" alt="User" class="profile-img">
-                <span class="username">John Doe</span>
-            </div>
-            <p>Here's a post from John!</p>
+<!-- Profile Header -->
+<div class="profile-header">
+    <div class="profile-info">
+        <img id="profile-picture" src="default-profile.jpg" alt="Profile Picture" class="profile-pic">
+        <div class="profile-details">
+            <h2 id="username">Username</h2>
+            <p id="profile-description">This is your bio description.</p>
+            <button class="edit-btn" onclick="editProfile()">Edit Profile</button>
         </div>
     </div>
+</div>
 
-    <script src="app.js"></script>
+<!-- Post Form -->
+<div class="post-form">
+    <textarea id="post-text" placeholder="What's on your mind?" rows="4" style="width: 100%;"></textarea>
+    <input type="file" id="file-input" accept="image/*,video/*">
+    <button class="post-btn" onclick="submitPost()">Post</button>
+</div>
+
+<!-- Post Feed -->
+<div id="post-feed">
+    <h3>Your Posts</h3>
+    <!-- Posts will be dynamically generated here -->
+</div>
+
+<script src="app.js"></script>
+<script>
+// This script loads the user profile data
+window.onload = function() {
+    loadProfile();
+};
+
+// Function to load the user's profile
+function loadProfile() {
+    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+
+    if (loggedInUser) {
+        document.getElementById('username').innerText = loggedInUser.username;
+        document.getElementById('profile-description').innerText = loggedInUser.description || 'No bio available.';
+        document.getElementById('profile-picture').src = loggedInUser.profilePicture || 'default-profile.jpg';
+        loadPosts();  // Load posts from the logged-in user
+    } else {
+        window.location.href = 'login.html'; // Redirect to login if not logged in
+    }
+}
+
+// Function to edit profile
+function editProfile() {
+    const newDescription = prompt("Enter a new bio:");
+    if (newDescription) {
+        const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+        loggedInUser.description = newDescription;
+        localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser));
+        loadProfile();  // Refresh profile
+    }
+}
+
+// Function to submit post
+function submitPost() {
+    const postText = document.getElementById("post-text").value;
+    const fileInput = document.getElementById("file-input");
+    const file = fileInput.files[0];
+
+    if (postText.trim() !== "" || file) {
+        const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+
+        const newPost = {
+            text: postText,
+            file: file ? URL.createObjectURL(file) : null,
+            fileType: file ? file.type : null,
+            likes: 0,
+            comments: []
+        };
+
+        loggedInUser.posts.push(newPost);
+        localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser));
+
+        loadPosts();  // Reload the posts
+    }
+}
+
+// Function to load posts
+function loadPosts() {
+    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+    const postFeed = document.getElementById("post-feed");
+    postFeed.innerHTML = ''; // Clear previous posts
+
+    loggedInUser.posts.forEach(post => {
+        const postElement = createPostElement(post);
+        postFeed.appendChild(postElement);
+    });
+}
+
+// Function to create post element
+function createPostElement(post) {
+    const postElement = document.createElement("div");
+    postElement.classList.add("post");
+
+    if (post.text) {
+        const postContent = document.createElement("p");
+        postContent.textContent = post.text;
+        postElement.appendChild(postContent);
+    }
+
+    if (post.fileType && post.fileType.startsWith('image')) {
+        const img = document.createElement("img");
+        img.src = post.file;
+        img.alt = "Post Image";
+        img.classList.add("post-img");
+        postElement.appendChild(img);
+    } else if (post.fileType && post.fileType.startsWith('video')) {
+        const video = document.createElement("video");
+        video.src = post.file;
+        video.controls = true;
+        video.classList.add("post-video");
+        postElement.appendChild(video);
+    }
+
+    const postFooter = document.createElement("div");
+    postFooter.classList.add("post-footer");
+
+    const likeButton = document.createElement("button");
+    likeButton.textContent = `Like (${post.likes})`;
+    likeButton.onclick = () => {
+        post.likes++;
+        localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser));
+        likeButton.textContent = `Like (${post.likes})`;
+    };
+
+    const commentButton = document.createElement("button");
+    commentButton.textContent = `Comment (${post.comments.length})`;
+    commentButton.onclick = () => {
+        const comment = prompt("Enter your comment:");
+        if (comment) {
+            post.comments.push(comment);
+            localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser));
+            commentButton.textContent = `Comment (${post.comments.length})`;
+        }
+    };
+
+    postFooter.appendChild(likeButton);
+    postFooter.appendChild(commentButton);
+
+    postElement.appendChild(postFooter);
+
+    return postElement;
+}
+</script>
+
 </body>
 </html>
-<div id="profile-header">
-    <img src="https://via.placeholder.com/120" alt="Profile Picture" class="profile-img">
-    <h2>John Doe</h2>
-    <p>@john_doe</p>
-    <button onclick="toggleFriend()">Add Friend</button>
-</div>
-
-<!-- Friends List -->
-<div id="friends-list">
-    <h3>Friends</h3>
-    <ul id="friend-list">
-        <!-- Friends will be listed here -->
-    </ul>
-</div>
