@@ -1,214 +1,159 @@
-<!-- HTML Structure -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Social Media Platform</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            padding: 20px;
-        }
-        .form-container {
-            max-width: 400px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        .post {
-            background-color: #fff;
-            padding: 10px;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        }
-        .post-img, .post-video {
-            max-width: 100%;
-            margin-top: 10px;
-        }
-        .toggle-btn {
-            margin-top: 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px;
-            width: 100%;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .toggle-btn:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <title>Profile</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- Login/Signup Forms -->
-<div id="login-form" class="form-container">
-    <h2>Login</h2>
-    <input type="text" id="login-username" placeholder="Username" required>
-    <input type="password" id="login-password" placeholder="Password" required>
-    <button class="toggle-btn" onclick="login()">Login</button>
-    <p>Don't have an account? <a href="javascript:void(0);" onclick="toggleForm()">Sign up</a></p>
+<!-- Profile Header -->
+<div class="profile-header">
+    <div class="profile-info">
+        <img id="profile-picture" src="default-profile.jpg" alt="Profile Picture" class="profile-pic">
+        <div class="profile-details">
+            <h2 id="username">Username</h2>
+            <p id="profile-description">This is your bio description.</p>
+            <button class="edit-btn" onclick="editProfile()">Edit Profile</button>
+        </div>
+    </div>
 </div>
 
-<div id="signup-form" class="form-container" style="display: none;">
-    <h2>Sign Up</h2>
-    <input type="text" id="signup-username" placeholder="Username" required>
-    <input type="password" id="signup-password" placeholder="Password" required>
-    <button class="toggle-btn" onclick="signup()">Sign Up</button>
-    <p>Already have an account? <a href="javascript:void(0);" onclick="toggleForm()">Login</a></p>
-</div>
-
-<!-- Feed Page -->
-<div id="feed-page" style="display: none;">
-    <h2>Welcome to the Feed</h2>
+<!-- Post Form -->
+<div class="post-form">
     <textarea id="post-text" placeholder="What's on your mind?" rows="4" style="width: 100%;"></textarea>
     <input type="file" id="file-input" accept="image/*,video/*">
-    <button class="toggle-btn" onclick="submitPost()">Post</button>
-    <div id="post-feed"></div>
+    <button class="post-btn" onclick="submitPost()">Post</button>
 </div>
 
+<!-- Post Feed -->
+<div id="post-feed">
+    <h3>Your Posts</h3>
+    <!-- Posts will be dynamically generated here -->
+</div>
+
+<script src="app.js"></script>
 <script>
-// Simulated User Database
-let users = JSON.parse(localStorage.getItem('users')) || []; // Use localStorage to persist users
-let loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+// This script loads the user profile data
+window.onload = function() {
+    loadProfile();
+};
 
-// Toggle between Login and Signup forms
-function toggleForm() {
-    const loginForm = document.getElementById("login-form");
-    const signupForm = document.getElementById("signup-form");
-    loginForm.style.display = loginForm.style.display === "none" ? "block" : "none";
-    signupForm.style.display = signupForm.style.display === "none" ? "block" : "none";
-}
+// Function to load the user's profile
+function loadProfile() {
+    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
 
-// Simulate user login
-function login() {
-    const username = document.getElementById("login-username").value;
-    const password = document.getElementById("login-password").value;
-    const user = users.find(u => u.username === username && u.password === password);
-
-    if (user) {
-        loggedInUser = user;
-        localStorage.setItem("loggedInUser", JSON.stringify(user));
-        alert("Login successful!");
-        displayFeedPage();
+    if (loggedInUser) {
+        document.getElementById('username').innerText = loggedInUser.username;
+        document.getElementById('profile-description').innerText = loggedInUser.description || 'No bio available.';
+        document.getElementById('profile-picture').src = loggedInUser.profilePicture || 'default-profile.jpg';
+        loadPosts();  // Load posts from the logged-in user
     } else {
-        alert("Invalid username or password.");
+        window.location.href = 'login.html'; // Redirect to login if not logged in
     }
 }
 
-// Simulate user signup
-function signup() {
-    const username = document.getElementById("signup-username").value;
-    const password = document.getElementById("signup-password").value;
-    const existingUser = users.find(u => u.username === username);
-
-    if (existingUser) {
-        alert("Username already exists!");
-    } else {
-        const newUser = { username, password, posts: [] };
-        users.push(newUser);
-        localStorage.setItem('users', JSON.stringify(users)); // Save to localStorage
-        alert("Signup successful! You can now log in.");
-        toggleForm();
+// Function to edit profile
+function editProfile() {
+    const newDescription = prompt("Enter a new bio:");
+    if (newDescription) {
+        const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+        loggedInUser.description = newDescription;
+        localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser));
+        loadProfile();  // Refresh profile
     }
 }
 
-// Display the feed page after login
-function displayFeedPage() {
-    document.getElementById('login-form').style.display = 'none';
-    document.getElementById('signup-form').style.display = 'none';
-    document.getElementById('feed-page').style.display = 'block';
-
-    loadPosts();
-}
-
-// Submit Post (Text, Image, Video)
+// Function to submit post
 function submitPost() {
     const postText = document.getElementById("post-text").value;
     const fileInput = document.getElementById("file-input");
     const file = fileInput.files[0];
 
     if (postText.trim() !== "" || file) {
+        const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+
         const newPost = {
             text: postText,
             file: file ? URL.createObjectURL(file) : null,
-            fileType: file ? file.type : null
+            fileType: file ? file.type : null,
+            likes: 0,
+            comments: []
         };
 
         loggedInUser.posts.push(newPost);
         localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser));
 
-        // Add post to feed
-        const postFeed = document.getElementById("post-feed");
-        const postElement = document.createElement("div");
-        postElement.classList.add("post");
-
-        if (postText.trim()) {
-            const postContent = document.createElement("p");
-            postContent.textContent = postText;
-            postElement.appendChild(postContent);
-        }
-
-        if (file && file.type.startsWith('image')) {
-            const img = document.createElement("img");
-            img.src = newPost.file;
-            img.alt = "Post Image";
-            img.classList.add("post-img");
-            postElement.appendChild(img);
-        } else if (file && file.type.startsWith('video')) {
-            const video = document.createElement("video");
-            video.src = newPost.file;
-            video.controls = true;
-            video.classList.add("post-video");
-            postElement.appendChild(video);
-        }
-
-        postFeed.appendChild(postElement);
+        loadPosts();  // Reload the posts
     }
 }
 
-// Load posts for the logged-in user
+// Function to load posts
 function loadPosts() {
+    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
     const postFeed = document.getElementById("post-feed");
-    postFeed.innerHTML = ''; // Clear the current feed
+    postFeed.innerHTML = ''; // Clear previous posts
 
     loggedInUser.posts.forEach(post => {
-        const postElement = document.createElement("div");
-        postElement.classList.add("post");
-
-        if (post.text) {
-            const postContent = document.createElement("p");
-            postContent.textContent = post.text;
-            postElement.appendChild(postContent);
-        }
-
-        if (post.fileType && post.fileType.startsWith('image')) {
-            const img = document.createElement("img");
-            img.src = post.file;
-            img.alt = "Post Image";
-            img.classList.add("post-img");
-            postElement.appendChild(img);
-        } else if (post.fileType && post.fileType.startsWith('video')) {
-            const video = document.createElement("video");
-            video.src = post.file;
-            video.controls = true;
-            video.classList.add("post-video");
-            postElement.appendChild(video);
-        }
-
+        const postElement = createPostElement(post);
         postFeed.appendChild(postElement);
     });
 }
 
-// Automatically redirect to the feed page if the user is logged in
-if (loggedInUser) {
-    displayFeedPage();
+// Function to create post element
+function createPostElement(post) {
+    const postElement = document.createElement("div");
+    postElement.classList.add("post");
+
+    if (post.text) {
+        const postContent = document.createElement("p");
+        postContent.textContent = post.text;
+        postElement.appendChild(postContent);
+    }
+
+    if (post.fileType && post.fileType.startsWith('image')) {
+        const img = document.createElement("img");
+        img.src = post.file;
+        img.alt = "Post Image";
+        img.classList.add("post-img");
+        postElement.appendChild(img);
+    } else if (post.fileType && post.fileType.startsWith('video')) {
+        const video = document.createElement("video");
+        video.src = post.file;
+        video.controls = true;
+        video.classList.add("post-video");
+        postElement.appendChild(video);
+    }
+
+    const postFooter = document.createElement("div");
+    postFooter.classList.add("post-footer");
+
+    const likeButton = document.createElement("button");
+    likeButton.textContent = `Like (${post.likes})`;
+    likeButton.onclick = () => {
+        post.likes++;
+        localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser));
+        likeButton.textContent = `Like (${post.likes})`;
+    };
+
+    const commentButton = document.createElement("button");
+    commentButton.textContent = `Comment (${post.comments.length})`;
+    commentButton.onclick = () => {
+        const comment = prompt("Enter your comment:");
+        if (comment) {
+            post.comments.push(comment);
+            localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser));
+            commentButton.textContent = `Comment (${post.comments.length})`;
+        }
+    };
+
+    postFooter.appendChild(likeButton);
+    postFooter.appendChild(commentButton);
+
+    postElement.appendChild(postFooter);
+
+    return postElement;
 }
 </script>
 
