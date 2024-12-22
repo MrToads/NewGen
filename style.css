@@ -1,65 +1,63 @@
 /* General Body Styling */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #181818; /* Dark background color */
-    color: #E4E6EB; /* Light text color */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #181818;
+    color: #E4E6EB;
     margin: 0;
     padding: 0;
 }
 
+/* Header Section */
 header {
-    background-color: #242526; /* Dark header background */
-    color: #E4E6EB; /* Light header text */
-    padding: 15px;
+    background-color: #242526;
+    color: #E4E6EB;
+    padding: 20px 10px;
     text-align: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-h1, h2 {
-    margin: 0;
-    font-size: 24px;
-}
-
-/* Navigation Links */
 nav a {
     color: #E4E6EB;
     text-decoration: none;
     margin: 0 15px;
+    font-size: 16px;
 }
 
 nav a:hover {
-    color: #1DA1F2; /* Light blue color for hover effect */
+    color: #1DA1F2;
 }
 
-/* Post and Feed */
+/* New Post Section */
 #new-post {
-    background-color: #242526; /* Same dark background for new post input */
+    background-color: #242526;
     padding: 20px;
-    border-radius: 8px;
+    border-radius: 10px;
     margin-top: 20px;
 }
 
 textarea {
     width: 100%;
-    background-color: #3A3B3C; /* Dark textarea background */
+    background-color: #3A3B3C;
     color: #E4E6EB;
-    padding: 12px;
+    padding: 15px;
     border: 1px solid #444;
-    border-radius: 5px;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-bottom: 10px;
 }
 
 button {
-    background-color: #1DA1F2; /* Light blue color for buttons */
+    background-color: #1DA1F2;
     color: white;
     border: none;
-    padding: 12px 15px;
-    border-radius: 5px;
+    padding: 12px 20px;
+    border-radius: 25px;
     cursor: pointer;
-    margin-top: 10px;
+    width: 100%;
 }
 
 button:hover {
-    background-color: #0d8ecf; /* Slightly darker blue on hover */
+    background-color: #0d8ecf;
 }
 
 /* Post Feed Section */
@@ -69,67 +67,101 @@ button:hover {
 }
 
 .post {
-    background-color: #242526; /* Dark background for each post */
-    border-radius: 8px;
+    background-color: #242526;
     padding: 15px;
     margin-bottom: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.post p {
-    font-size: 16px;
+.post-header {
+    display: flex;
+    align-items: center;
     margin-bottom: 10px;
 }
 
-button {
-    background-color: #3A3B3C; /* Dark buttons for like, comment, etc. */
-    border: 1px solid #555;
+.profile-img {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
 }
 
-button:hover {
-    background-color: #1DA1F2; /* Light blue hover effect for post buttons */
+.username {
+    font-size: 18px;
+    font-weight: bold;
+    color: #E4E6EB;
 }
 
-button:disabled {
-    background-color: #555;
-}
-
-/* Profile Section */
-#profile-info {
+/* Profile Header */
+#profile-header {
     text-align: center;
     background-color: #242526;
     padding: 20px;
-    border-radius: 8px;
+    border-radius: 10px;
+    margin: 20px auto;
+    width: 80%;
+    max-width: 500px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-#profile-info img {
-    width: 100px;
-    height: 100px;
+#profile-header img {
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
+    margin-bottom: 15px;
+    border: 4px solid #1DA1F2;
 }
 
-#profile-info h2 {
-    margin: 15px 0;
-    font-size: 22px;
+#profile-header h2 {
+    font-size: 24px;
+    color: #E4E6EB;
+}
+
+#profile-header p {
+    font-size: 16px;
+    color: #E4E6EB;
 }
 
 button {
     background-color: #1DA1F2;
     color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
+    padding: 12px 25px;
+    border-radius: 25px;
     cursor: pointer;
+    border: none;
+    margin-top: 10px;
 }
 
 button:hover {
     background-color: #0d8ecf;
 }
 
-/* General Links */
-a {
-    color: #1DA1F2;
+/* Post Buttons */
+button {
+    background-color: #3A3B3C;
+    color: #E4E6EB;
+    border: 1px solid #555;
+    border-radius: 8px;
+    padding: 8px 16px;
+    margin-top: 5px;
 }
 
-a:hover {
-    text-decoration: underline;
+button:hover {
+    background-color: #1DA1F2;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+
+    #profile-header {
+        width: 90%;
+    }
+
+    .container {
+        padding: 10px;
+    }
 }
